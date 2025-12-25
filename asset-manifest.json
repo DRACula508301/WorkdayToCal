@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/WorkdayToCal/static/css/main.38a5b594.css",
+    "main.js": "/WorkdayToCal/static/js/main.c83081b9.js",
+    "static/js/787.ea698b90.chunk.js": "/WorkdayToCal/static/js/787.ea698b90.chunk.js",
+    "index.html": "/WorkdayToCal/index.html",
+    "static/media/googleLogo.svg": "/WorkdayToCal/static/media/googleLogo.d7f092af888a54de79ed9c9303d689d7.svg",
+    "main.38a5b594.css.map": "/WorkdayToCal/static/css/main.38a5b594.css.map",
+    "main.c83081b9.js.map": "/WorkdayToCal/static/js/main.c83081b9.js.map",
+    "787.ea698b90.chunk.js.map": "/WorkdayToCal/static/js/787.ea698b90.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.38a5b594.css",
+    "static/js/main.c83081b9.js"
+  ]
+}
