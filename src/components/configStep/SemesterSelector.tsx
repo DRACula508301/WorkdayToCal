@@ -6,20 +6,15 @@ const TIME_ZONE = { zone: "America/Chicago" };
 
 export const SEMESTERS: ISemester[] = [
     {
-        name: "SU23 Session III",
-        firstDayOfClasses: DateTime.fromObject({ year: 2023, month: 6, day: 12, hour: 8 }, TIME_ZONE),
-        lastDayOfClasses:DateTime.fromObject({ year: 2023, month: 8, day: 4, hour: 8 }, TIME_ZONE)
+        name: "SP26",
+        firstDayOfClasses: DateTime.fromObject({ year: 2026, month: 1, day: 12, hour: 8 }, TIME_ZONE),
+        lastDayOfClasses: DateTime.fromObject({ year: 2026, month: 5, day: 1, hour: 8 }, TIME_ZONE)
     },
     {
-        name: "SU24 Session IV",
-        firstDayOfClasses: DateTime.fromObject({ year: 2023, month: 7, day: 17, hour: 8 }, TIME_ZONE),
-        lastDayOfClasses:DateTime.fromObject({ year: 2023, month: 8, day: 17, hour: 8 }, TIME_ZONE)
+        name: "FA25",
+        firstDayOfClasses: DateTime.fromObject({ year: 2025, month: 8, day: 25, hour: 8 }, TIME_ZONE),
+        lastDayOfClasses: DateTime.fromObject({ year: 2025, month: 12, day: 12, hour: 8 }, TIME_ZONE)
     },
-    {
-        name: "FL23",
-        firstDayOfClasses: DateTime.fromObject({ year: 2023, month: 8, day: 29, hour: 8 }, TIME_ZONE),
-        lastDayOfClasses: DateTime.fromObject({ year: 2023, month: 12, day: 9, hour: 8 }, TIME_ZONE)
-    }
 ];
 for (const semester of SEMESTERS) {
     if (!semester.firstDayOfClasses.isValid || !semester.lastDayOfClasses.isValid) {
