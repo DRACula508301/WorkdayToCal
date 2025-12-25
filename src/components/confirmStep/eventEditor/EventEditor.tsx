@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useId } from "react";
 
 import { EventDateInput } from "src/eventLogic/EventDateInput";
-import { IEventInputs, WebstacEventType } from "src/eventLogic/IEventInputs";
+import { IEventInputs, WorkdayEventType } from "src/eventLogic/IEventInputs";
 import { IValidationError, ValidationErrorType } from "src/eventLogic/IValidationError";
 import { ActionType, IUpdateStateAction } from "src/state/editorStatesActions";
 import { IEventEditorState } from "src/state/IEventEditorState";
@@ -125,7 +125,7 @@ export const EventEditor = React.memo(function EventEditor(props: IEventEditorPr
         </div>}
 
         renderCol2={cssClasses => <div className={cssClasses}>
-            {inputs.type === WebstacEventType.Course ?
+            {inputs.type === WorkdayEventType.Course ?
                 <RepeatingDaysSelector
                     selectedDays={inputs.repeatingDays}
                     disabled={isReadOnly}

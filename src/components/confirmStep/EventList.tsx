@@ -1,13 +1,13 @@
 import React from "react";
 import { EventEditor } from "src/components/confirmStep/eventEditor/EventEditor";
 import { getPlural } from "src/describeCount";
-import { DESCRIPTION_FOR_TYPE, WebstacEventType } from "src/eventLogic/IEventInputs";
+import { DESCRIPTION_FOR_TYPE, WorkdayEventType } from "src/eventLogic/IEventInputs";
 import { IValidationError } from "src/eventLogic/IValidationError";
 import { ActionType, IUpdateStateAction } from "src/state/editorStatesActions";
 import { EventEditorId, IEventEditorState } from "src/state/IEventEditorState";
 
 interface IEventListProps {
-    eventType: WebstacEventType;
+    eventType: WorkdayEventType;
     editorStates: IEventEditorState[];
     validationErrors: Record<EventEditorId, IValidationError[]>;
     dispatch: React.Dispatch<IUpdateStateAction>;

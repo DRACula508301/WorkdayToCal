@@ -4,7 +4,7 @@ import { DateTime } from "luxon";
 import { CalendarApi } from "src/google/CalendarApi";
 import { DayOfWeek } from "./DayOfWeek";
 import { ISemester } from "./ISemester";
-import { IEventInputs, WebstacEventType } from "./IEventInputs";
+import { IEventInputs, WorkdayEventType } from "./IEventInputs";
 
 // Example of an ISO 8601 date: 2017-10-09T02:33:50Z
 const ISO_TIME_START_INDEX = 11;
@@ -25,7 +25,7 @@ const RECURRENCE_VALUE_FOR_DAY: Readonly<Record<DayOfWeek, string>> = {
     [DayOfWeek.Sunday]: "SU",
 };
 const TIME_ZONE = "America/Chicago";
-const DESCRIPTION = "Created by WebSTAC to Calendar";
+const DESCRIPTION = "Created by Workday to Calendar";
 const REMINDERS = {
     overrides: [],
     useDefault: false
@@ -75,7 +75,7 @@ export class GoogleEventExporter {
      * @private
      */
     private _getStartDate(event: IEventInputs, semester: ISemester): DateTime {
-        if (event.type === WebstacEventType.Course) {
+        if (event.type === WorkdayEventType.Course) {
             return semester.firstDayOfClasses.plus({
                 // The event might not happen on the first day of classes.  Advance time to find the first day.
                 days: this._daysUntilNearestDayOfWeek(semester.firstDayOfClasses.weekday, event.repeatingDays)
@@ -118,7 +118,7 @@ export class GoogleEventExporter {
      * @return list of recurrence rules
      */
     private _generateRecurrence(event: IEventInputs, semester: ISemester): string[] {
-        if (event.type !== WebstacEventType.Course) {
+        if (event.type !== WorkdayEventType.Course) {
             return [];
         }
 

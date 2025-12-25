@@ -1,6 +1,6 @@
 {
-  "name": "webstactocal2",
-  "version": "0.1.0",
+  "name": "workdaytocal",
+  "version": "0.0.0",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
@@ -21,7 +21,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "homepage": "https://smhsu.github.io/webstacToCal/",
+  "homepage": "http://dracula508301.github.io/WorkdayToCal",
   "eslintConfig": {
     "extends": [
       "react-app",

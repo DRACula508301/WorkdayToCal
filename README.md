@@ -1,6 +1,6 @@
-# WebSTAC to Calendar development branch
+# Workday to Calendar development branch
 
-This branch contains all the code necessary to build the static HTML and CSS for **WebSTAC to Calendar**.
+This branch contains all the code necessary to build the static HTML and CSS for **Workday to Calendar**.
 
 ## Installation and running the dev server
 1. Install the most recent LTS version of Node.js (https://nodejs.org/en/).

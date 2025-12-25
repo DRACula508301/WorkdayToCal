@@ -5,7 +5,7 @@ import { IUpdateStateAction } from "src/state/editorStatesActions";
 import { EventExportMethod } from "src/eventLogic/EventExportMethod";
 import { IEventEditorState } from "src/state/IEventEditorState";
 import { ISemester } from "src/eventLogic/ISemester";
-import { WebstacEventType } from "src/eventLogic/IEventInputs";
+import { WorkdayEventType } from "src/eventLogic/IEventInputs";
 import { IGoogleCalendarMetadata } from "src/google/IGoogleCalendarMetadata";
 
 import { ExportAllPanel } from "./ExportAllPanel";
@@ -47,7 +47,7 @@ export function ExportConfirmArea(props: IExportConfirmAreaProps) {
         </li>);
     }
     if (editorStates.length <= 0) {
-        notReadyNotifications.push(<li key="2">Please copy-paste something valid from WebSTAC.</li>);
+        notReadyNotifications.push(<li key="2">Please copy-paste something valid from Workday.</li>);
     }
     if (notReadyNotifications.length > 0 && IS_CHECKING_READY_STATE) {
         return <div>
@@ -78,8 +78,8 @@ export function ExportConfirmArea(props: IExportConfirmAreaProps) {
         </div>
         <ExportAllPanel editorStates={editorStates} validationErrors={validationErrors} exporter={exportMany} />
         <div>
-            <EventList eventType={WebstacEventType.Course} {...tableProps} />
-            <EventList eventType={WebstacEventType.Final} {...tableProps} />
+            <EventList eventType={WorkdayEventType.Course} {...tableProps} />
+            <EventList eventType={WorkdayEventType.Final} {...tableProps} />
         </div>
     </div>;
 }

@@ -10,7 +10,7 @@ import { EventTimeInput } from "src/eventLogic/EventTimeInput";
  * NewCourse), then we might have to refactor to add some polymorphism to event objects to make sure the if-then logic
  * stays manageable.
  */
-export enum WebstacEventType {
+export enum WorkdayEventType {
     /**
      * Could be named Class but isn't to avoid confusion with JS classes.
      */
@@ -18,13 +18,13 @@ export enum WebstacEventType {
     Final
 }
 
-export const DESCRIPTION_FOR_TYPE: Record<WebstacEventType, string> = {
-    [WebstacEventType.Course]: "Class",
-    [WebstacEventType.Final]: "Final"
+export const DESCRIPTION_FOR_TYPE: Record<WorkdayEventType, string> = {
+    [WorkdayEventType.Course]: "Class",
+    [WorkdayEventType.Final]: "Final"
 };
 
 interface IEventBasicInputs {
-    type: WebstacEventType;
+    type: WorkdayEventType;
     name: string;
     location: string;
     startTime: EventTimeInput;
@@ -32,13 +32,20 @@ interface IEventBasicInputs {
 }
 
 export interface ICourseEventInputs extends IEventBasicInputs {
-    type: WebstacEventType.Course;
+    type: WorkdayEventType.Course;
     repeatingDays: Set<DayOfWeek>;
+    startDate?: EventDateInput; // If undefined, use semester start date
+    endDate?: EventDateInput;   // If undefined, use semester end dates
 }
 
 export interface IFinalEventInputs extends IEventBasicInputs {
-    type: WebstacEventType.Final;
+    type: WorkdayEventType.Final;
     date: EventDateInput;
 }
 
 export type IEventInputs = ICourseEventInputs | IFinalEventInputs;
+
+/**
+ * @deprecated Use WorkdayEventType instead. This alias is provided for backward compatibility.
+ */
+export const WebstacEventType = WorkdayEventType;

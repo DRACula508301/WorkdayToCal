@@ -1,14 +1,14 @@
 import { debounce } from "lodash";
 import React from "react";
 import { describeCount } from "src/describeCount";
-import { WebstacCourseParser } from "src/eventLogic/WebstacCourseParser";
-import { WebstacExamParser } from "src/eventLogic/WebstacExamParser";
-import { IEventInputs } from "src/eventLogic/IEventInputs";
+import { WorkdayCourseParser } from "src/eventLogic/WorkdayCourseParser";
+import { WorkdayExamParser } from "src/eventLogic/WorkdayExamParser";
+import { IEventInputs, IFinalEventInputs } from "src/eventLogic/IEventInputs";
 import { Analytics } from "src/google/Analytics";
 
-const CLASS_SCHEDULE_URL = "https://acadinfo.wustl.edu/apps/ClassSchedule/";
-const PLACEHOLDER = "Go to WebSTAC >> Courses & Registration >> Class Schedule.\n" +
-    "Then, highlight ALL the text, including finals schedule, and copy and paste it into this box.";
+const CLASS_SCHEDULE_URL = "https://www.myworkday.com/wustl/d/task/2998$28771.htmld#backheader=true";
+const PLACEHOLDER = "Go to Workday >> Academic Hub >> Planning and Registration >> Current Classes.\n" +
+    "Then, highlight ALL the text (CTRL+A) and copy and paste it into this box.";
 const MODAL_ID = "help-modal"; // The modal itself is specified in index.html.
 const DEBOUNCE_DELAY_MS = 300;
 
@@ -43,8 +43,10 @@ export class ScheduleInputArea extends React.PureComponent<IScheduleInputAreaPro
     }
 
     parseEvents(input: string): void {
-        const courses = WebstacCourseParser.parseCourses(input);
-        const finals = WebstacExamParser.parseExams(input, courses);
+        const courses = WorkdayCourseParser.parseCourses(input);
+        // const finals = WorkdayExamParser.parseExams(input, courses);
+        // Temporarily disable exam parsing since Workday doesn't have finals info
+        const finals: IFinalEventInputs[] = [];
         this.setState({
             numCoursesParsed: courses.length,
             numFinalsParsed: finals.length
@@ -88,10 +90,10 @@ function Instructions() {
             <ol>
                 <li>
                     Go to your <a href={CLASS_SCHEDULE_URL} target="_blank" rel="noreferrer">class schedule on
-                    WebSTAC.</a>
+                    Workday.</a>
                 </li>
                 <li>
-                    While in <i>List View</i>, highlight ALL the text on the page, including finals.
+                    While in <i>List View</i>, highlight ALL the text on the page.
                     (Shortcut: <SelectAllShortcut />)
                 </li>
                 <li>Copy-paste the highlighted text into the box below.</li>
@@ -131,7 +133,7 @@ function ParseStatus(props: IScheduleInputAreaState) {
         <h3 className="fs-6 fw-bold">Auto-detection results:</h3>
         <ul className="mb-2">
             <li>{describeCount(numCoursesParsed, "class")} detected.</li>
-            <li>{describeCount(numFinalsParsed, "final")} detected.</li>
+            {/* <li>{describeCount(numFinalsParsed, "final")} detected.</li> */}
         </ul>
         {secondaryText && <div>{secondaryText}</div>}
     </div>;

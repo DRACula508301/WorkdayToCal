@@ -17,7 +17,7 @@ export class EventTimeInput {
     /**
      * User-readable instructions for properly formatting their input.
      */
-    public readonly formatInstructions = "For example, 3:00 PM or 11:00AM";
+    public readonly formatInstructions = "For example, 10:00AM";
 
     constructor(raw: string) {
         this.raw = raw;
@@ -25,7 +25,12 @@ export class EventTimeInput {
     }
 
     private _parse(): DateTime {
-        const timeStr = this.raw.toUpperCase().replace(/\s+/g, "");
-        return DateTime.fromFormat(timeStr, "h:mma");
+
+        return DateTime.fromFormat(this.raw, "hh:mma");
     }
+}
+
+if (require.main === module) {
+    const time = new EventTimeInput("10:00AM");
+    console.log(time.parsed.toLocaleString());
 }

@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 
 /**
- * User input for date.  Expects input in a format matching WebSTAC's formatting.
+ * User input for date.  Expects input in a format matching Workday's formatting.
  */
 export class EventDateInput {
     /**
@@ -17,10 +17,9 @@ export class EventDateInput {
     /**
      * User-readable instructions for properly formatting their input.
      */
-    public readonly formatInstructions = "Use exactly three letters for the month, for example Dec 9 2023";
+    public readonly formatInstructions = "Use the format MM/DD/YYYY, e.g. 08/25/2023";
 
     constructor(raw: string) {
         this.raw = raw;
-        this.parsed = DateTime.fromFormat(raw, "LLL d yyyy");
-    }
+        this.parsed = DateTime.fromFormat(raw, "MM/dd/yyyy");    }
 }

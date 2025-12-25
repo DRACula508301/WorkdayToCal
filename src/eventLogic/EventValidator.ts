@@ -1,5 +1,5 @@
 import { IValidationError, ValidationErrorType } from "./IValidationError";
-import { IEventInputs, WebstacEventType } from "./IEventInputs";
+import { IEventInputs, WorkdayEventType } from "./IEventInputs";
 
 export class EventValidator {
     validate(event: IEventInputs): IValidationError[] {
@@ -9,14 +9,14 @@ export class EventValidator {
             errors.push({ type: ValidationErrorType.BadName, details: "Enter a name" });
         }
 
-        if (event.type === WebstacEventType.Final && !event.date.parsed.isValid) {
+        if (event.type === WorkdayEventType.Final && !event.date.parsed.isValid) {
             errors.push({
                 type: ValidationErrorType.BadDate,
                 details: "Enter a valid date. " + event.date.formatInstructions
             });
         }
 
-        if (event.type === WebstacEventType.Course && event.repeatingDays.size === 0) {
+        if (event.type === WorkdayEventType.Course && event.repeatingDays.size === 0) {
             errors.push({ type: ValidationErrorType.BadRecurrence, details: "Select at least one day of the week" });
         }
 

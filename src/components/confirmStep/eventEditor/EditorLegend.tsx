@@ -1,9 +1,9 @@
-import { DESCRIPTION_FOR_TYPE, WebstacEventType } from "src/eventLogic/IEventInputs";
+import { DESCRIPTION_FOR_TYPE, WorkdayEventType } from "src/eventLogic/IEventInputs";
 import "./EditorLegend.css";
 
 interface IEditorLegendProps {
     className?: string;
-    eventType: WebstacEventType;
+    eventType: WorkdayEventType;
     index: number;
 }
 

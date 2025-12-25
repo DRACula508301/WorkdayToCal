@@ -1,6 +1,6 @@
 import { EventDateInput } from "src/eventLogic/EventDateInput";
 import { EventTimeInput } from "src/eventLogic/EventTimeInput";
-import { DESCRIPTION_FOR_TYPE, ICourseEventInputs, IFinalEventInputs, WebstacEventType } from "./IEventInputs";
+import { DESCRIPTION_FOR_TYPE, ICourseEventInputs, IFinalEventInputs, WorkdayEventType } from "./IEventInputs";
 
 /*
 An exam looks like this; it takes up two lines:
@@ -32,12 +32,12 @@ const CaptureGroups = {
  *
  * @author Silas Hsu
  */
-export class WebstacExamParser {
+export class WorkdayExamParser {
     /**
-     * Parses exams from WebSTAC.  Optionally takes an array of parsed courses which will be used to get locations for
+     * Parses exams from Workday.  Optionally takes an array of parsed courses which will be used to get locations for
      * exams that are in the same location as the class. Returns an empty array if no exams could be parsed.
      *
-     * @param rawInput - class schedule copy-pasted from WebSTAC
+     * @param rawInput - class schedule copy-pasted from Workday
      * @param courses - list of courses to match to exams for determining exam locations
      * @return array of parsed exams
      */
@@ -57,8 +57,8 @@ export class WebstacExamParser {
             }
 
             events.push({
-                type: WebstacEventType.Final,
-                name: `${courseName} ${DESCRIPTION_FOR_TYPE[WebstacEventType.Final]}`,
+                type: WorkdayEventType.Final,
+                name: `${courseName} ${DESCRIPTION_FOR_TYPE[WorkdayEventType.Final]}`,
                 location,
                 date: new EventDateInput(examMatch[CaptureGroups.Date]),
                 startTime: new EventTimeInput(examMatch[CaptureGroups.StartTime]),
