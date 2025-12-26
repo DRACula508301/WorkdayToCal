@@ -21,7 +21,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "homepage": "https://dracula508301.github.io/WorkdayToCal",
+  "homepage": "https://workday2calendar.com",
   "eslintConfig": {
     "extends": [
       "react-app",
