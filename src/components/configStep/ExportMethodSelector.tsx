@@ -130,11 +130,10 @@ export function ExportMethodSelector(props: IExportMethodSelectorProps) {
         {googleStatusDisplay}
         <FancyRadioButton
             majorText=".ical file"
-            minorText="Not available yet -- coming in the next few months"
+            minorText="Download a file to import into Outlook, Apple Calendar, etc."
             value={EventExportMethod.IcalFile}
             checked={method === EventExportMethod.IcalFile}
-            //onChange={() => onMethodChanged?.(EventExportMethod.IcalFile)}
-            disabled={true}
+            onChange={() => onMethodChanged?.(EventExportMethod.IcalFile)}
         />
     </div>;
 }

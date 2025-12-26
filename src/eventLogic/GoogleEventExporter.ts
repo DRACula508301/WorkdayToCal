@@ -3,6 +3,7 @@ import { DateTime } from "luxon";
 
 import { CalendarApi } from "src/google/CalendarApi";
 import { DayOfWeek } from "./DayOfWeek";
+import { IEventExporter } from "./IEventExporter";
 import { ISemester } from "./ISemester";
 import { IEventInputs, WorkdayEventType } from "./IEventInputs";
 
@@ -31,7 +32,27 @@ const REMINDERS = {
     useDefault: false
 };
 
-export class GoogleEventExporter {
+export class GoogleEventExporter implements IEventExporter {
+    async export(
+        events: IEventInputs[],
+        semester: ISemester,
+        calendarId: string | undefined,
+        onSuccess: (event: IEventInputs, url: string) => void,
+        onError: (event: IEventInputs, error: any) => void
+    ): Promise<void> {
+        if (!calendarId) {
+            throw new Error("Select a calendar to export to Google Calendar.");
+        }
+        for (const event of events) {
+            try {
+                const url = await this.exportOne(event, calendarId, semester);
+                onSuccess(event, url);
+            } catch (error) {
+                onError(event, error);
+            }
+        }
+    }
+
     exportOne(event: IEventInputs, calendarId: string, semester: ISemester): Promise<string> {
         const { start, end } = this._generateStartEndAsISO(event, semester);
         return CalendarApi.getInstance().createEvent(calendarId, {
@@ -76,6 +97,11 @@ export class GoogleEventExporter {
      */
     private _getStartDate(event: IEventInputs, semester: ISemester): DateTime {
         if (event.type === WorkdayEventType.Course) {
+            // If event has custom start date, use it
+            if (event.startDate?.parsed.isValid) {
+                return event.startDate.parsed;
+            }
+            // Otherwise calculate from semester start
             return semester.firstDayOfClasses.plus({
                 // The event might not happen on the first day of classes.  Advance time to find the first day.
                 days: this._daysUntilNearestDayOfWeek(semester.firstDayOfClasses.weekday, event.repeatingDays)
@@ -83,6 +109,21 @@ export class GoogleEventExporter {
         } else {
             return event.date.parsed;
         }
+    }
+
+    /**
+     * Gets the event's end date for recurrence rules.  For courses, uses custom end date if provided,
+     * otherwise uses semester's last day of classes.
+     *
+     * @param event
+     * @param semester
+     * @private
+     */
+    private _getEndDate(event: IEventInputs, semester: ISemester): DateTime {
+        if (event.type === WorkdayEventType.Course && event.endDate?.parsed.isValid) {
+            return event.endDate.parsed;
+        }
+        return semester.lastDayOfClasses;
     }
 
     /**
@@ -124,7 +165,8 @@ export class GoogleEventExporter {
 
         const stringDays = Array.from(event.repeatingDays).map(day => RECURRENCE_VALUE_FOR_DAY[day]);
         if (stringDays.length > 0) {
-            const endRepeat = semester.lastDayOfClasses.plus({ days: 1 }).toFormat(RECURRENCE_END_FORMAT);
+            const endDate = this._getEndDate(event, semester);
+            const endRepeat = endDate.plus({ days: 1 }).toFormat(RECURRENCE_END_FORMAT);
             return [`RRULE:FREQ=WEEKLY;UNTIL=${endRepeat};BYDAY=${stringDays.join(",")}`];
         } else {
             return [];

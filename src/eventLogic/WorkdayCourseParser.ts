@@ -1,6 +1,7 @@
 import { DayOfWeek } from "./DayOfWeek";
 import { EventTimeInput } from "src/eventLogic/EventTimeInput";
 import { ICourseEventInputs, WorkdayEventType } from "./IEventInputs";
+import { EventDateInput } from "src/eventLogic/EventDateInput";
 
 /* Match from a course header to just before the next course header (or end of string), e.g.:
         Opens in new window
@@ -30,7 +31,6 @@ const COURSE_HEADER_REGEX = /([A-Z]+\s+\d+(?:[-\s][A-Z0-9]+)?)\s*-\s*([^\n]+)/g;
     OR Mon | 10:00 AM - 11:20 AM | CUPPLES II, Room 00101
 
 */
-
 const MEETING_PATTERN_REGEX =
     new RegExp(
         "([A-Za-z/]+)[ \\t\\f\\v\\r]*\\|\\s*(\\d{1,2}:\\d{2}\\s*[AP]M)[ \\t\\f\\v\\r]*-[ \\t\\f\\v\\r]*" +
@@ -40,6 +40,13 @@ const MEETING_PATTERN_REGEX =
 
 /* Match day names in Workday format */
 const DAY_REGEX = /Mon|Tue|Wed|Thu|Fri|Sat|Sun/g;
+
+/* Matches a pair of starting and ending dates, e.g.:
+    08/25/2025
+	
+    12/17/2025
+*/
+const DATE_REGEX = /(\d{2}\/\d{2}\/\d{4})/g;
 
 const CourseChunkCaptureGroups = {
     CourseName: 1,
@@ -68,6 +75,11 @@ const DAY_MAP: Record<string, DayOfWeek> = {
     "Fri": DayOfWeek.Friday,
     "Sat": DayOfWeek.Saturday,
     "Sun": DayOfWeek.Sunday
+};
+
+const DateCaptureGroups = {
+    StartDate: 0,
+    EndDate: 1
 };
 
 /**
@@ -103,6 +115,9 @@ export class WorkdayCourseParser {
             // Find all meeting patterns within this chunk
             const meetingMatches = Array.from(chunkContent.matchAll(MEETING_PATTERN_REGEX));
 
+            // Find start and end dates for the course (Assume subsections share the same dates with lectures)
+            const dateMatches = Array.from(chunkContent.matchAll(DATE_REGEX));
+
             // Match each (sub)section to a meeting time/location
             if (sectionMatches.length !== meetingMatches.length) {
                 console.warn(`Mismatched section and meeting counts for course ${courseName}: ` +
@@ -119,7 +134,7 @@ export class WorkdayCourseParser {
                 };
             });
 
-            // For each section, extract days, times, and location
+            // For each section, extract days, times, location, and start/end dates
             for (const { section, meeting } of meetingPairs) {
                 const sectionName = section[CourseHeaderCaptureGroups.FullMatch];
                 const daysString = meeting[MeetingPatternCaptureGroups.Days];
@@ -127,6 +142,8 @@ export class WorkdayCourseParser {
                 const endTimeString = meeting[MeetingPatternCaptureGroups.EndTime];
                 const building = meeting[MeetingPatternCaptureGroups.Building];
                 const room = meeting[MeetingPatternCaptureGroups.Room];
+                const startDateString = dateMatches[DateCaptureGroups.StartDate]?.[0];
+                const endDateString = dateMatches[DateCaptureGroups.EndDate]?.[0];
 
                 // Build location string
                 let location = building ? building.trim() : "";
@@ -140,7 +157,9 @@ export class WorkdayCourseParser {
                     location: location,
                     startTime: new EventTimeInput(startTimeString),
                     endTime: new EventTimeInput(endTimeString),
-                    repeatingDays: WorkdayCourseParser.parseDays(daysString)
+                    repeatingDays: WorkdayCourseParser.parseDays(daysString),
+                    startDate: startDateString ? new EventDateInput(startDateString) : undefined,
+                    endDate: endDateString ? new EventDateInput(endDateString) : undefined
                 });
             }
         }

@@ -33,7 +33,7 @@ interface IExportConfirmAreaProps {
 export function ExportConfirmArea(props: IExportConfirmAreaProps) {
     const { exportMethod, calendar, semester, editorStates, dispatch } = props;
     const validationErrors = useEventInputValidation(editorStates);
-    const { exportOne, exportMany } = useEventExporter(calendar.id, semester, dispatch);
+    const { exportOne, exportMany } = useEventExporter(exportMethod, calendar.id, semester, dispatch);
 
     const notReadyNotifications = [];
     if (exportMethod === EventExportMethod.None) {
@@ -59,6 +59,7 @@ export function ExportConfirmArea(props: IExportConfirmAreaProps) {
     const tableProps = {
         editorStates,
         validationErrors,
+        semester,
         dispatch,
         onExportClicked: exportOne
     };
@@ -68,15 +69,23 @@ export function ExportConfirmArea(props: IExportConfirmAreaProps) {
         <div className="mb-2 gap-1">
             Configured:
             <span className="ms-1 badge bg-wustl text-white">{semester?.name}</span>
-            <span className="ms-1 badge bg-wustl text-white">
+            {exportMethod === EventExportMethod.GoogleCalendar && <span className="ms-1 badge bg-wustl text-white">
                 <img
                     src={googleLogo}
                     style={{ maxHeight: "11px", verticalAlign: "bottom" }}
                     alt="Google"
                 /> {calendar.summary}
-            </span>
+            </span>}
+            {exportMethod === EventExportMethod.IcalFile && <span className="ms-1 badge bg-wustl text-white">
+                .ical File
+            </span>}
         </div>
-        <ExportAllPanel editorStates={editorStates} validationErrors={validationErrors} exporter={exportMany} />
+        <ExportAllPanel
+            editorStates={editorStates}
+            validationErrors={validationErrors}
+            exporter={exportMany}
+            exportMethod={exportMethod}
+        />
         <div>
             <EventList eventType={WorkdayEventType.Course} {...tableProps} />
             <EventList eventType={WorkdayEventType.Final} {...tableProps} />

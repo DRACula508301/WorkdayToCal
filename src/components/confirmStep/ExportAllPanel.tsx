@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
 import { describeCount } from "src/describeCount";
+import { EventExportMethod } from "src/eventLogic/EventExportMethod";
 import { Analytics } from "src/google/Analytics";
 import { EventEditorId, IEventEditorState } from "src/state/IEventEditorState";
 import { IValidationError } from "src/eventLogic/IValidationError";
@@ -11,11 +12,12 @@ import { ExportAllResults } from "./ExportAllResults";
 interface IExportAllPanelProps {
     editorStates: IEventEditorState[];
     validationErrors: Record<EventEditorId, IValidationError[]>;
-    exporter: (toExport: IEventEditorState[]) => Array<Promise<boolean>>
+    exporter: (toExport: IEventEditorState[]) => Array<Promise<boolean>>;
+    exportMethod: EventExportMethod;
 }
 
 export function ExportAllPanel(props: IExportAllPanelProps) {
-    const { editorStates, validationErrors, exporter } = props;
+    const { editorStates, validationErrors, exporter, exportMethod } = props;
     const [numSuccessful, setNumSuccessful] = useState(0);
     const [numFailed, setNumFailed] = useState(0);
     const isAnyExporting = editorStates.some(state => state.exportState.isExporting);
@@ -39,6 +41,10 @@ export function ExportAllPanel(props: IExportAllPanelProps) {
         }
     };
 
+    const buttonText = exportMethod === EventExportMethod.IcalFile
+        ? "Download .ical file for all selected events"
+        : "Add all selected events to Google Calendar";
+
     return <div className="mb-4">
         <div className="mb-2 d-flex gap-3 align-items-center">
             <button
@@ -48,9 +54,9 @@ export function ExportAllPanel(props: IExportAllPanelProps) {
             >
                 <FontAwesomeIcon icon={faCloudArrowUp} className="me-2" />
                 <div>
-                    <div>Add all selected events to Google Calendar</div>
+                    <div>{buttonText}</div>
                     <div style={{ fontSize: "smaller" }}>
-                        Create {describeCount(batch.length, "event")}
+                        {exportMethod === EventExportMethod.IcalFile ? "Download" : "Create"} {describeCount(batch.length, "event")}
                     </div>
                 </div>
             </button>

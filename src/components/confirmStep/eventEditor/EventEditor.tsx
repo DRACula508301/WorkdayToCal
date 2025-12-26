@@ -4,10 +4,12 @@ import React, { useId } from "react";
 
 import { EventDateInput } from "src/eventLogic/EventDateInput";
 import { IEventInputs, WorkdayEventType } from "src/eventLogic/IEventInputs";
+import { ISemester } from "src/eventLogic/ISemester";
 import { IValidationError, ValidationErrorType } from "src/eventLogic/IValidationError";
 import { ActionType, IUpdateStateAction } from "src/state/editorStatesActions";
 import { IEventEditorState } from "src/state/IEventEditorState";
 
+import { CourseDateRangeSelector } from "./CourseDateRangeSelector";
 import { EditorExportControls } from "./EditorExportControls";
 import { EditorLayout } from "./EditorLayout";
 import { EditorLegend } from "./EditorLegend";
@@ -23,6 +25,7 @@ interface IEventEditorProps {
     editorState: IEventEditorState;
     validationErrors: IValidationError[];
     index: number;
+    semester: ISemester | null;
     dispatch: React.Dispatch<IUpdateStateAction>;
     onExportClicked: (toExport: IEventEditorState) => void;
 }
@@ -35,7 +38,7 @@ interface IEventEditorProps {
  * @param props
  */
 export const EventEditor = React.memo(function EventEditor(props: IEventEditorProps) {
-    const { editorState, validationErrors, index, dispatch, onExportClicked } = props;
+    const { editorState, validationErrors, index, semester, dispatch, onExportClicked } = props;
     const { inputs, exportState } = editorState;
 
     const checkboxId = useId();
@@ -122,6 +125,15 @@ export const EventEditor = React.memo(function EventEditor(props: IEventEditorPr
                     onChange={e => dispatchChange({ location: e.currentTarget.value })}
                 />}
             />
+            {inputs.type === WorkdayEventType.Course && (
+                <CourseDateRangeSelector
+                    startDate={inputs.startDate}
+                    endDate={inputs.endDate}
+                    semester={semester}
+                    disabled={isReadOnly}
+                    onChange={dispatchChange}
+                />
+            )}
         </div>}
 
         renderCol2={cssClasses => <div className={cssClasses}>

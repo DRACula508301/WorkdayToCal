@@ -2,6 +2,7 @@ import React from "react";
 import { EventEditor } from "src/components/confirmStep/eventEditor/EventEditor";
 import { getPlural } from "src/describeCount";
 import { DESCRIPTION_FOR_TYPE, WorkdayEventType } from "src/eventLogic/IEventInputs";
+import { ISemester } from "src/eventLogic/ISemester";
 import { IValidationError } from "src/eventLogic/IValidationError";
 import { ActionType, IUpdateStateAction } from "src/state/editorStatesActions";
 import { EventEditorId, IEventEditorState } from "src/state/IEventEditorState";
@@ -10,12 +11,13 @@ interface IEventListProps {
     eventType: WorkdayEventType;
     editorStates: IEventEditorState[];
     validationErrors: Record<EventEditorId, IValidationError[]>;
+    semester: ISemester | null;
     dispatch: React.Dispatch<IUpdateStateAction>;
     onExportClicked: (toExport: IEventEditorState) => void;
 }
 
 export function EventList(props: IEventListProps) {
-    const { eventType, editorStates, validationErrors, dispatch, onExportClicked } = props;
+    const { eventType, editorStates, validationErrors, semester, dispatch, onExportClicked } = props;
 
     const eventsToRender = editorStates.filter(event => event.inputs.type === eventType);
     if (eventsToRender.length <= 0) {
@@ -55,6 +57,7 @@ export function EventList(props: IEventListProps) {
                     editorState={event}
                     validationErrors={validationErrors[event.id]}
                     index={index}
+                    semester={semester}
                     dispatch={dispatch}
                     onExportClicked={onExportClicked}
                 />;
