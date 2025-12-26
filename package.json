@@ -21,7 +21,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "homepage": "http://workday2calendar.com",
+  "homepage": "https://workday2calendar.com",
   "eslintConfig": {
     "extends": [
       "react-app",
