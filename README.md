@@ -30,4 +30,11 @@ Of course, you'll need your own webserver for this.
 1. Change the `homepage` key in `package.json` to whereever you are hosting.
 2. Change the values in `.env.production` to whatever API keys you will be using.
     * `GTAG_ID` is for Google Analytics.  You can delete that key if you don't want to use Analytics.
-3. Run `npm run build` on the command line.  This will output static HTML and Javascript that you can host.
+3. Build the app. This will create a "build" folder that includes the compiled static HTML/JS files.
+```bash
+    npm run build
+``` 
+4. Publish to GitHub Pages (*Optional*).
+```bash
+    npx gh-pages -d build
+```
