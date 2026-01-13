@@ -1,6 +1,6 @@
-# Workday to Calendar development branch
+# WashU Workday to Calendars development branch
 
-This branch contains all the code necessary to build the static HTML and CSS for **Workday to Calendar**.
+This branch contains all the code necessary to build the static HTML and CSS for **WashU Workday to Calendars**.
 
 ## Installation and running the dev server
 1. Install the most recent LTS version of Node.js (https://nodejs.org/en/).

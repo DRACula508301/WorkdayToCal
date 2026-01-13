@@ -26,7 +26,7 @@ const RECURRENCE_VALUE_FOR_DAY: Readonly<Record<DayOfWeek, string>> = {
     [DayOfWeek.Sunday]: "SU",
 };
 const TIME_ZONE = "America/Chicago";
-const DESCRIPTION = "Created by Workday to Calendar";
+const DESCRIPTION = "Created by WashU Workday to Calendars";
 const REMINDERS = {
     overrides: [],
     useDefault: false

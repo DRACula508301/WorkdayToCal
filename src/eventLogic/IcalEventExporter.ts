@@ -49,7 +49,7 @@ export class IcalEventExporter implements IEventExporter {
                     end: endDateTime.toJSDate(),
                     summary: event.name,
                     location: event.location,
-                    description: "Created by Workday to Calendar",
+                    description: "Created by WashU Workday to Calendars",
                 };
 
                 if (event.type === WorkdayEventType.Course) {
